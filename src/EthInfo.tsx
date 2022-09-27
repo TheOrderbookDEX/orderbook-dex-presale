@@ -11,7 +11,7 @@ interface EthInfoProps {
 
 export default function EthInfo({ preSale, preSaleState }: EthInfoProps) {
   return <>
-    <div className="mb-3">
+    <div className="mb-2">
       <Row>
         <Col>ETH collected:</Col>
         <Col className="text-end">{formatEth(preSaleState.totalPaid)} ETH</Col>

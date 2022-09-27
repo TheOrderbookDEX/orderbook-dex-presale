@@ -23,7 +23,7 @@ export default function WalletProvider({ chain, children }: WalletProviderProps)
   }, [ chain ]);
 
   return <>
-    <ErrorAlert error={error} onClose={() => setError(undefined)} />
+    {error && <ErrorAlert error={error} onClose={() => setError(undefined)} />}
     {children(wallet, requestAccess)}
   </>;
 }

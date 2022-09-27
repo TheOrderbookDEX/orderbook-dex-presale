@@ -1,17 +1,17 @@
 import { Col, ProgressBar, Row } from 'react-bootstrap';
 import { PreSale } from './api/PreSale';
 import { PreSaleAccount } from './api/PreSaleAccount';
-import { formatEth, formatTokens } from './utils/format';
+import { formatTokens } from './utils/format';
 import { percentage } from './utils/math';
 
-interface AccountInfoProps {
+interface TokensBoughtInfoProps {
   preSale: PreSale;
   preSaleAccount: PreSaleAccount;
 }
 
-export default function AccountInfo({ preSale, preSaleAccount }: AccountInfoProps) {
+export default function TokensBoughtInfo({ preSale, preSaleAccount }: TokensBoughtInfoProps) {
   return <>
-    <div className="mb-3">
+    <div className="mb-2">
       <Row>
         <Col>Tokens bought:</Col>
         <Col className="text-end">{formatTokens(preSaleAccount.amountBought)} OBD</Col>
@@ -19,10 +19,6 @@ export default function AccountInfo({ preSale, preSaleAccount }: AccountInfoProp
       <Row>
         <Col>Buy limit per address:</Col>
         <Col className="text-end">{formatTokens(preSale.buyLimit)} OBD</Col>
-      </Row>
-      <Row>
-        <Col>ETH paid:</Col>
-        <Col className="text-end">{formatEth(preSaleAccount.amountPaid)} ETH</Col>
       </Row>
     </div>
     <div className="mb-3">

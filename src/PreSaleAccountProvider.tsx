@@ -29,7 +29,7 @@ export default function PreSaleAccountProvider({ preSale, updateTimer, wallet, c
 
   } else {
     return <>
-      <ErrorAlert error={error} onClose={() => setError(undefined)} />
+      {error && <ErrorAlert error={error} onClose={() => setError(undefined)} />}
       {children(preSaleAccount)}
     </>;
   }

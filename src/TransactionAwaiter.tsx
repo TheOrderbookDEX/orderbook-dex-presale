@@ -1,30 +1,32 @@
 import { useCallback, useEffect, useState } from 'react';
 import { TransactionSender } from './api/TransactionSender';
 import { UpdateTimer } from './api/UpdateTimer';
-import ErrorAlert from './ErrorAlert';
 import LoadingSpinner from './LoadingSpinner';
+import { ShowNotificationCallback } from './Notifications';
+import { formatError } from './utils/error';
 
 interface TransactionAwaiterProps {
   updateTimer: UpdateTimer;
+  showNotification: ShowNotificationCallback;
   children(awaitTransaction: (transaction: TransactionSender) => void): JSX.Element;
 }
 
-export default function TransactionAwaiter({ updateTimer, children }: TransactionAwaiterProps) {
+export default function TransactionAwaiter({ updateTimer, showNotification, children }: TransactionAwaiterProps) {
   const [ transaction, setTransaction ] = useState<TransactionSender>();
-  const [ error, setError ] = useState<unknown>();
 
   const awaitTransaction = useCallback((transaction: TransactionSender) => {
     setTransaction(transaction);
     transaction.addEventListener('success', () => {
       setTransaction(undefined);
+      // TODO showNotification({ type: 'success' });
       updateTimer.update();
     });
     transaction.addEventListener('reject', () => setTransaction(undefined));
     transaction.addEventListener('error', ({ error }) => {
       setTransaction(undefined);
-      setError(error);
+      showNotification({ type: 'danger', ...formatError(error) });
     });
-  }, [ updateTimer ]);
+  }, [ updateTimer, showNotification ]);
 
   useEffect(() => {
     if (!transaction) return;
@@ -33,9 +35,8 @@ export default function TransactionAwaiter({ updateTimer, children }: Transactio
 
   return <>
     {transaction && <LoadingSpinner />}
-    <ErrorAlert error={error} onClose={() => setError(undefined)} />
-    <div className={transaction ? 'd-none' : ''}><>
+    <div className={transaction ? 'd-none' : ''}>
       {children(awaitTransaction)}
-    </></div>
+    </div>
   </>;
 }

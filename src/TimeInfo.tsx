@@ -20,7 +20,7 @@ export default function TimeInfo({ time, preSale }: TimeInfoProps) {
   } else if (time < preSale.earlyEndTime) {
     return <>
       <p>The pre-sale is on stage I.</p>
-      <Row className="mb-3">
+      <Row className="mb-2">
         <Col xs={8}>Time left until the end of stage I:</Col>
         <Col xs={4} className="text-end">{formatTime(preSale.earlyEndTime - time)}</Col>
       </Row>
@@ -30,7 +30,7 @@ export default function TimeInfo({ time, preSale }: TimeInfoProps) {
   } else if (time < preSale.endTime) {
     return <>
       <p>The pre-sale is on stage II.</p>
-      <Row className="mb-3">
+      <Row className="mb-2">
         <Col xs={8}>Time left until the end of the pre-sale:</Col>
         <Col xs={4} className="text-end">{formatTime(preSale.endTime - time)}</Col>
       </Row>

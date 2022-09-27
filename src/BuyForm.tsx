@@ -53,12 +53,14 @@ export default function BuyForm({ exchangeRate, preSale, wallet, onSend }: BuyFo
       <Row className="g-2">
         <Col xs={6}>
           <InputGroup size="sm">
+            <InputGroup.Text>With:</InputGroup.Text>
             <EtherValueInput className="text-end" value={eth} min={1n} step={1n} onChange={onEthChange} />
             <InputGroup.Text>ETH</InputGroup.Text>
           </InputGroup>
         </Col>
         <Col xs={6}>
           <InputGroup size="sm">
+            <InputGroup.Text>Buy:</InputGroup.Text>
             <EtherValueInput className="text-end" value={tokens} min={1n} step={1n} onChange={onTokensChange} onBlur={onTokensBlur} />
             <InputGroup.Text>OBD</InputGroup.Text>
           </InputGroup>

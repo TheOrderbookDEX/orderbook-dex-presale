@@ -26,7 +26,8 @@ export class PreSaleAccountWatcher {
         const abortable = createAbortableWrapper(abortSignal);
         const amountBought = await abortable(this.preSaleContract.amountSold(this.wallet.address));
         const amountPaid = await abortable(this.preSaleContract.amountPaid(this.wallet.address));
-        this.eventTarget.dispatchEvent(new PreSaleAccountChangeEvent({ amountBought, amountPaid }));
+        const amountClaimed = await abortable(this.preSaleContract.amountClaimed(this.wallet.address));
+        this.eventTarget.dispatchEvent(new PreSaleAccountChangeEvent({ amountBought, amountPaid, amountClaimed }));
 
       } catch (error) {
         if (error !== abortSignal.reason) {

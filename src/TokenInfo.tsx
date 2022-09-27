@@ -11,7 +11,7 @@ interface TokenInfoProps {
 
 export default function TokenInfo({ preSale, preSaleState }: TokenInfoProps) {
   return <>
-    <div className="mb-3">
+    <div className="mb-2">
       <Row>
         <Col>Tokens sold:</Col>
         <Col className="text-end">{formatTokens(preSaleState.totalSold)} OBD</Col>

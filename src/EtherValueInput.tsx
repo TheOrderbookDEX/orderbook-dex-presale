@@ -2,12 +2,12 @@ import { formatValue, parseValue } from '@theorderbookdex/abi2ts-lib';
 import { useEffect, useState } from 'react';
 import { Form, FormControlProps } from 'react-bootstrap';
 
-type EtherValueInputProps = Omit<FormControlProps, 'value' | 'onChange' | 'type'> & {
+type EtherValueInputProps = Omit<FormControlProps, 'value' | 'onChange' | 'readOnly' | 'type'> & {
   value: bigint;
   min?: bigint;
   max?: bigint;
   step?: bigint;
-  onChange(value: bigint): void;
+  onChange?: (value: bigint) => void;
 };
 
 export default function EtherValueInput({ value, min, max, step, onChange, onBlur, ...props }: EtherValueInputProps) {
@@ -25,9 +25,10 @@ export default function EtherValueInput({ value, min, max, step, onChange, onBlu
       max={max === undefined ? undefined : formatValue(max)}
       step={step === undefined ? undefined : formatValue(step)}
       value={internalValue}
-      onChange={event => {
+      readOnly={!onChange}
+      onChange={(event) => {
         try {
-          onChange(parseValue(event.target.value || 0));
+          onChange?.(parseValue(event.target.value || 0));
           setInternalValue(event.target.value);
         } catch {}
       }}

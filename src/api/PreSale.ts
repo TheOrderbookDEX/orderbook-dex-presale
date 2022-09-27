@@ -77,4 +77,20 @@ export class PreSale {
       return await abortable(this.preSaleContract.buy({ value }));
     });
   }
+
+  claim(wallet: ConnectedWallet): TransactionSender {
+    return new TransactionSender(async (abortSignal: AbortSignal) => {
+      const abortable = createAbortableWrapper(abortSignal);
+      await abortable(this.preSaleContract.callStatic.claim());
+      return await abortable(this.preSaleContract.claim());
+    });
+  }
+
+  cancel(wallet: ConnectedWallet): TransactionSender {
+    return new TransactionSender(async (abortSignal: AbortSignal) => {
+      const abortable = createAbortableWrapper(abortSignal);
+      await abortable(this.preSaleContract.callStatic.cancel());
+      return await abortable(this.preSaleContract.cancel());
+    });
+  }
 }

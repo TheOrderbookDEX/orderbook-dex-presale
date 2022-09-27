@@ -27,7 +27,7 @@ export default function PreSaleStateProvider({ preSale, updateTimer, children }:
 
   } else {
     return <>
-      <ErrorAlert error={error} onClose={() => setError(undefined)} />
+      {error && <ErrorAlert error={error} onClose={() => setError(undefined)} />}
       {children(preSaleState)}
     </>;
   }
