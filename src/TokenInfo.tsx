@@ -1,7 +1,8 @@
 import { Col, ProgressBar, Row } from 'react-bootstrap';
 import { formatTokens } from './utils/format';
 import { percentage } from './utils/math';
-import { PreSale, PreSaleState } from './api/presale';
+import { PreSale } from './api/PreSale';
+import { PreSaleState } from './api/PreSaleState';
 
 interface TokenInfoProps {
   preSale: PreSale;

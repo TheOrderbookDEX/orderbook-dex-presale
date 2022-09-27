@@ -1,17 +1,15 @@
 import { Ended, NotStarted, BuyLimitReached, NotEnoughFunds, SoldOut } from '@theorderbookdex/orderbook-dex-token/dist/interfaces/IOrderbookDEXPreSale';
-import { useMemo, useState } from 'react';
+import { useMemo } from 'react';
 import { Alert } from 'react-bootstrap';
-import { NoEthereumProvider } from './api/ethereum';
-import { InvalidChain } from './api/presale';
+import { NoEthereumProvider } from './api/Ethereum';
+import { InvalidChain } from './api/PreSaleConnection';
 
 interface ErrorAlertProps {
   error: unknown;
-  dismissible?: boolean;
+  onClose?: () => void;
 }
 
-export default function ErrorAlert({ error, dismissible }: ErrorAlertProps) {
-  const [ show, setShow ] = useState(true);
-
+export default function ErrorAlert({ error, onClose }: ErrorAlertProps) {
   const { title, message } = useMemo(() => {
     if (error instanceof NoEthereumProvider) {
       return {
@@ -55,17 +53,20 @@ export default function ErrorAlert({ error, dismissible }: ErrorAlertProps) {
         message: <p>There are no more tokens for sale. Check our website and our socials for more ways you can get the token.</p>,
       };
 
-    } else {
+    } else if (error !== undefined) {
       console.error(error);
       return {
         title: <>Unexpected Error</>,
         message: <p>An unexpected error has occurred.</p>,
       };
+
+    } else {
+      return {};
     }
   }, [ error ])
 
   return (
-    <Alert className="mb-3" variant="danger" show={show} onClose={() => setShow(false)} dismissible={dismissible}>
+    <Alert className="mb-3" variant="danger" show={error !== undefined} onClose={onClose} dismissible={onClose !== undefined}>
       <Alert.Heading>{title}</Alert.Heading>
       <hr />
       {message}

@@ -1,5 +1,5 @@
 import { Col, ProgressBar, Row } from 'react-bootstrap';
-import { PreSale } from './api/presale';
+import { PreSale } from './api/PreSale';
 import { formatTime, timePercentage } from './utils/time';
 
 interface TimeInfoProps {

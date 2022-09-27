@@ -1,24 +1,34 @@
 import { useEffect, useState } from 'react';
-import { PreSale, PreSaleState } from './api/presale';
+import { PreSale } from './api/PreSale';
+import { PreSaleState } from './api/PreSaleState';
+import { UpdateTimer } from './api/UpdateTimer';
+import ErrorAlert from './ErrorAlert';
+import LoadingSpinner from './LoadingSpinner';
 
 interface PreSaleStateProviderProps {
   preSale: PreSale;
-  children: (preSale: PreSaleState) => JSX.Element;
+  updateTimer: UpdateTimer;
+  children: (preSaleState: PreSaleState) => JSX.Element;
 }
 
-export default function PreSaleStateProvider({ preSale, children }: PreSaleStateProviderProps): JSX.Element {
-  const [ preSaleState, setPreSaleState ] = useState<PreSaleState>(preSale.getState());
+export default function PreSaleStateProvider({ preSale, updateTimer, children }: PreSaleStateProviderProps): JSX.Element {
+  const [ preSaleState, setPreSaleState ] = useState<PreSaleState>();
+  const [ error, setError ] = useState<unknown>();
 
   useEffect(() => {
-    const abortController = new AbortController();
-    const abortSignal = abortController.signal;
+    const watcher = preSale.createStateWatcher(updateTimer);
+    watcher.addEventListener('change', ({ preSaleState }) => setPreSaleState(preSaleState));
+    watcher.addEventListener('error', ({ error }) => setError(error));
+    return () => watcher.abort();
+  }, [ preSale, updateTimer ]);
 
-    preSale.addEventListener('update', () => {
-      setPreSaleState(preSale.getState());
-    }, { signal: abortSignal });
+  if (!preSaleState) {
+    return <LoadingSpinner />;
 
-    return () => abortController.abort();
-  }, [ preSale ]);
-
-  return children(preSaleState);
+  } else {
+    return <>
+      <ErrorAlert error={error} onClose={() => setError(undefined)} />
+      {children(preSaleState)}
+    </>;
+  }
 }

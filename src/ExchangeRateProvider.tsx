@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import { PreSale } from './api/presale';
+import { PreSale } from './api/PreSale';
 
 interface ExchangeRateProviderProps {
   time: bigint;

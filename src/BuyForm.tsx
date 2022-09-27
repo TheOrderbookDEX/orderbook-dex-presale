@@ -1,8 +1,9 @@
 import { parseValue } from '@theorderbookdex/abi2ts-lib';
 import { FormEvent, useCallback, useState } from 'react';
 import { Button, Col, Form, InputGroup, Row } from 'react-bootstrap';
-import { PreSale } from './api/presale';
-import { Wallet } from './api/wallet';
+import { PreSale } from './api/PreSale';
+import { TransactionSender } from './api/TransactionSender';
+import { ConnectedWallet } from './api/Wallet';
 import EtherValueInput from './EtherValueInput';
 
 const ETHER = parseValue(1);
@@ -10,8 +11,8 @@ const ETHER = parseValue(1);
 interface BuyFormProps {
   exchangeRate: bigint;
   preSale: PreSale;
-  wallet: Wallet;
-  onSend(sender: (abortSignal: AbortSignal) => Promise<void>): void;
+  wallet: ConnectedWallet;
+  onSend(transaction: TransactionSender): void;
 }
 
 export default function BuyForm({ exchangeRate, preSale, wallet, onSend }: BuyFormProps) {
@@ -26,14 +27,12 @@ export default function BuyForm({ exchangeRate, preSale, wallet, onSend }: BuyFo
 
     if (form.checkValidity()) {
       setValidated(false);
-      onSend(async (abortSignal) => {
-        await preSale.buy(eth, abortSignal);
-      });
+      onSend(preSale.buy(wallet, eth));
 
     } else {
       setValidated(true);
     }
-  }, [ eth, preSale, onSend ]);
+  }, [ eth, preSale, wallet, onSend ]);
 
   const onEthChange = useCallback((eth: bigint) => {
     setEth(eth);

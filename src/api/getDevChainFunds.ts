@@ -1,14 +1,14 @@
 import { getAccounts, getBalance, hexstring } from '@theorderbookdex/abi2ts-lib';
+import { createAbortableWrapper } from './createAbortableWrapper';
 
 export async function getDevChainFunds(abortSignal: AbortSignal) {
-  const [address] = await getAccounts();
-  abortSignal.throwIfAborted();
+  const abortable = createAbortableWrapper(abortSignal);
 
-  const balance = await getBalance(address);
-  abortSignal.throwIfAborted();
+  const [address] = await abortable(getAccounts());
+  const balance = await abortable(getBalance(address));
 
   if (!balance) {
-    await fetch('http://localhost:8545', {
+    await abortable(fetch('http://localhost:8545', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -18,7 +18,6 @@ export async function getDevChainFunds(abortSignal: AbortSignal) {
         method: 'evm_setAccountBalance',
         params: [ address, hexstring(1000000000000000000000000n) ],
       }),
-    });
-    abortSignal.throwIfAborted();
+    }));
   }
 }

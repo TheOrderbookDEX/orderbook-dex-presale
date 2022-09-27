@@ -1,54 +1,25 @@
-import { useCallback, useEffect, useState } from 'react';
-import { Chain } from './api/chain';
-import { getEthereum } from './api/ethereum';
+import { useEffect, useState } from 'react';
+import { ChainConnection } from './api/ChainConnection';
+import { ConnectedChain } from './api/Chain';
+import { Ethereum } from './api/Ethereum';
 import ErrorAlert from './ErrorAlert';
 import LoadingSpinner from './LoadingSpinner';
 
 interface ChainProviderProps {
-  children: (chain: Chain) => JSX.Element;
+  ethereum: Ethereum;
+  children: (chain: ConnectedChain) => JSX.Element;
 }
 
-export default function ChainProvider({ children }: ChainProviderProps): JSX.Element {
-  const [ abortSignal, setAbortSignal ] = useState<AbortSignal>();
-
-  useEffect(() => {
-    const abortController = new AbortController();
-    setAbortSignal(abortController.signal);
-    return () => abortController.abort();
-  }, []);
-
+export default function ChainProvider({ ethereum, children }: ChainProviderProps): JSX.Element {
   const [ error, setError ] = useState<unknown>();
-  const [ chain, setChain ] = useState<Chain>();
-
-  const connectChain = useCallback((abortSignal: AbortSignal) => {
-    void (async() => {
-      try {
-        setChain(undefined);
-        setError(undefined);
-        const chain = await Chain.connect(getEthereum(), abortSignal);
-        setChain(chain);
-
-      } catch (error) {
-        if (error !== abortSignal.reason) {
-          setError(error);
-        }
-      }
-    })();
-  }, []);
+  const [ chain, setChain ] = useState<ConnectedChain>();
 
   useEffect(() => {
-    if (!abortSignal) return;
-    connectChain(abortSignal);
-  }, [ abortSignal, connectChain ]);
-
-  useEffect(() => {
-    if (!abortSignal) return;
-    if (!chain) return;
-    const localAbortController = new AbortController();
-    chain.addEventListener('disconnect', () => connectChain(abortSignal), { signal: abortSignal });
-    abortSignal.addEventListener('abort', () => chain.disconnect(), { signal: localAbortController.signal });
-    return () => localAbortController.abort();
-  }, [ abortSignal, chain, connectChain ]);
+    const connection = new ChainConnection(ethereum);
+    connection.addEventListener('change', ({ chain }) => setChain(chain));
+    connection.addEventListener('error', ({ error }) => setError(error));
+    return () => connection.abort();
+  }, [ ethereum ]);
 
   if (error) {
     return <ErrorAlert error={error} />;

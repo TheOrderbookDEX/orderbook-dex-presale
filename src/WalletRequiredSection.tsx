@@ -1,21 +1,16 @@
 import { Button } from 'react-bootstrap';
-import { Wallet } from './api/wallet';
-import ErrorAlert from './ErrorAlert';
+import { ConnectedWallet, CONNECTING_WALLET, Wallet } from './api/Wallet';
 import LoadingSpinner from './LoadingSpinner';
-import { CONNECTING_WALLET, WalletError, WalletType } from './WalletProvider';
 
 interface WalletRequiredSectionProps {
-  wallet: WalletType;
+  wallet: Wallet;
   requestWallet(): void;
-  children(wallet: Wallet): JSX.Element;
+  children(wallet: ConnectedWallet): JSX.Element;
 }
 
 export default function WalletRequiredSection({ wallet, requestWallet, children }: WalletRequiredSectionProps) {
   if (wallet === CONNECTING_WALLET) {
     return <LoadingSpinner />;
-
-  } else if (wallet instanceof WalletError) {
-    return <ErrorAlert error={wallet.cause} />;
 
   } else if (!wallet) {
     return (
