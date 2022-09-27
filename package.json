@@ -2,7 +2,7 @@
   "name": "@theorderbookdex/orderbook-dex-presale",
   "version": "0.1.0",
   "description": "This is the app for The Orderbook DEX pre-sale",
-  "license": "UNLICENSED",
+  "license": "BUSL-1.1",
   "author": "The Orderbook DEX Team",
   "repository": "https://github.com/TheOrderbookDEX/orderbook-dex-presale.git",
   "private": true,
