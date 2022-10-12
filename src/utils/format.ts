@@ -1,4 +1,4 @@
-import { formatValue } from '@theorderbookdex/abi2ts-lib';
+import { formatValue } from '@frugal-wizard/abi2ts-lib';
 
 export function formatTokens(value: bigint): string {
   return separateThousands(removeDecimals(formatValue(value)));

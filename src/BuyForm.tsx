@@ -1,4 +1,4 @@
-import { parseValue } from '@theorderbookdex/abi2ts-lib';
+import { parseValue } from '@frugal-wizard/abi2ts-lib';
 import { FormEvent, useCallback, useState } from 'react';
 import { Button, Col, Form, InputGroup, Row } from 'react-bootstrap';
 import { PreSale } from './api/PreSale';

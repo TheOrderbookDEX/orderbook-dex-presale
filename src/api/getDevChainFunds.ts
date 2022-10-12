@@ -1,4 +1,4 @@
-import { getAccounts, getBalance, hexstring } from '@theorderbookdex/abi2ts-lib';
+import { getAccounts, getBalance, hexstring } from '@frugal-wizard/abi2ts-lib';
 import { createAbortableWrapper } from './createAbortableWrapper';
 
 export async function getDevChainFunds(abortSignal: AbortSignal) {

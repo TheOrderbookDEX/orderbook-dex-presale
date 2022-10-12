@@ -1,4 +1,4 @@
-import { formatValue, parseValue } from '@theorderbookdex/abi2ts-lib';
+import { formatValue, parseValue } from '@frugal-wizard/abi2ts-lib';
 import { useEffect, useState } from 'react';
 import { Form, FormControlProps } from 'react-bootstrap';
 

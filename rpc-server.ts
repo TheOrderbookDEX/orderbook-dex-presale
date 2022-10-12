@@ -1,7 +1,7 @@
 import ganache, { EthereumProvider } from 'ganache';
 import levelup from 'levelup';
 import memdown from 'memdown';
-import { createSigner, hexstring, predictContractAddress } from '@theorderbookdex/abi2ts-lib';
+import { createSigner, hexstring, predictContractAddress } from '@frugal-wizard/abi2ts-lib';
 import { OrderbookDEXToken } from '@theorderbookdex/orderbook-dex-token/dist/OrderbookDEXToken';
 import { OrderbookDEXTeamTreasury } from '@theorderbookdex/orderbook-dex-token/dist/OrderbookDEXTeamTreasury';
 import { OrderbookDEXSeed } from '@theorderbookdex/orderbook-dex-token/dist/OrderbookDEXSeed';

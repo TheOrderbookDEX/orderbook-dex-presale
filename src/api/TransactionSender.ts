@@ -1,4 +1,4 @@
-import { Transaction } from '@theorderbookdex/abi2ts-lib';
+import { Transaction } from '@frugal-wizard/abi2ts-lib';
 import { isProviderRpcError, USER_REJECTED_REQUEST } from './Ethereum';
 
 interface TransactionCallback {
